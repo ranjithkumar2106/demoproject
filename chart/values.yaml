@@ -1,0 +1,29 @@
+replicaCount: 1
+
+image:
+  repository: 219244194696.dkr.ecr.us-east-1.amazonaws.com/demoproject
+  tag: latest
+  pullPolicy: IfNotPresent
+  pullSecret: ecrreg
+
+nameOverride: ""
+fullnameOverride: ""
+service:
+  type: LoadBalancer
+  port: 8080
+
+ingress:
+  enabled: false
+  annotations: {}
+  paths: []
+  hosts:
+    - chart-example.local
+  tls: []
+
+resources: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

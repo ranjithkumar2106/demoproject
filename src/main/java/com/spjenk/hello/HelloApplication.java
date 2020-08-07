@@ -1,12 +1,14 @@
-package com.example.demoweb;
+package com.spjenk.hello;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class DemowebApplication {
+public class HelloApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(DemowebApplication.class, args);
+		SpringApplication.run(HelloApplication.class, args);
 	}
+
 }
+
