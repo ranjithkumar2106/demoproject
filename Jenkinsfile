@@ -18,7 +18,6 @@ pipeline {
 stage('Run Unit Testing') {
       steps {
         sh '''echo "Running Unit Testing"
-	      cd task/demoweb
 	      mvn clean test'''
       }
     }
@@ -26,7 +25,6 @@ stage('Run Unit Testing') {
     stage('Run Build') {
       steps {
         sh ''' echo "Compiling and building the maven project"
-	      cd task/demoweb
 	      mvn clean package'''
       }
     }
@@ -35,7 +33,6 @@ stage('Run Unit Testing') {
 	  stage(' Run Code Quality Analysis using SonarQube') {
       steps {
         sh ''' echo "Running Sonar code quality Analysis"
-	      cd task/demoweb 
 	      mvn sonar:sonar -Dsonar.host.url=http://0.0.0.0:9000'''
       }
     }
@@ -45,7 +42,7 @@ stage('Run Unit Testing') {
       steps {
         echo "Build docker image"
         script {
-           sh '''docker build -t $image:$version ./task/demoweb/
+           sh '''docker build -t $image:$version .
 	         echo "Login to ECR Repo"
 		 $(aws ecr get-login --no-include-email --region us-east-1 | sed 's|https://||')
 		 echo "Pushing docker image to ECR"
@@ -74,8 +71,8 @@ stage('Run Unit Testing') {
 	     echo "Update the context or kubeconfig"
 	     aws eks --region $region update-kubeconfig --name $cluster_name
 	     echo "Updating the version"
-	     cd task/demoweb/charts/springboot-demoweb
-	     sed -i 's/tag/$version/' values.yaml
+	     cd chart
+	     sed -i 's/dockertag/$version/' values.yaml
 	     helm upgrade -n $NAMESPACE $RELEASE_NAME .
 	     """
         }
