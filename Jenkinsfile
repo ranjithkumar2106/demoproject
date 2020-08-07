@@ -15,13 +15,15 @@ pipeline {
 
   }
 	
-stage('Run Unit Testing') {
+
+  stages {
+	  stage('Run Unit Testing') {
       steps {
         sh '''echo "Running Unit Testing"
 	      mvn clean test'''
       }
     }
-  stages {
+	  
     stage('Run Build') {
       steps {
         sh ''' echo "Compiling and building the maven project"
