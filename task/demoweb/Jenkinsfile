@@ -58,11 +58,11 @@ stage('Run Unit Testing') {
       }
     }
 	
-     stage('Approval for Deployment in K8s') {
+     stage('Approval for Deployment') {
        steps {
             script {
               timeout(time: 10, unit: 'MINUTES') {
-                input(id: "Deploy in K8s", message: "Do You want to proceed further for deployment in k8s", ok: 'Deploy')
+                input(id: "Deploy", message: "Are you sure to deploy current release into target environment", ok: 'Deploy')
               }
             }
         }
@@ -71,11 +71,11 @@ stage('Run Unit Testing') {
 	stage('Deploy in K8s') {
        steps {
              sh """
-	     echo " Update the kubeconfig"
+	     echo "Update the context or kubeconfig"
 	     aws eks --region $region update-kubeconfig --name $cluster_name
-	     echo "Changing values file for built tag $version"
-	     cd springboot-demo/demoweb/charts/springboot-demoweb
-	     sed -i 's/imagetag/$version/' values.yaml
+	     echo "Updating the version"
+	     cd task/demoweb/charts/springboot-demoweb
+	     sed -i 's/tag/$version/' values.yaml
 	     helm upgrade -n $NAMESPACE $RELEASE_NAME .
 	     """
         }
