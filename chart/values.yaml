@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: 219244194696.dkr.ecr.us-east-1.amazonaws.com/demoproject
-  tag: latest
+  tag: dockertag
   pullPolicy: IfNotPresent
   pullSecret: ecrreg
 
