@@ -75,6 +75,7 @@ pipeline {
 	     echo "Updating the version"
 	     cd chart
 	     sed -i 's/dockertag/$version/' values.yaml
+	     helm version --client
 	     helm install -n $NAMESPACE $RELEASE_NAME .
 	     """
         }
