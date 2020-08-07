@@ -1,11 +1,11 @@
 pipeline {
    environment {
-    image = "062211046697.dkr.ecr.us-east-2.amazonaws.com/springboot-demoweb"
+    image = "219244194696.dkr.ecr.us-east-1.amazonaws.com/demoproject"
 	version = "1.0.0.$BUILD_NUMBER"
-	NAMESPACE= "springboot-demoweb"
-	RELEASE_NAME = "springboot-demoweb"
-	region= "us-east-2"
-	cluster_name= "Cluster-avMYie8MkKMO"
+	NAMESPACE= "demoproject"
+	RELEASE_NAME = "demoproject"
+	region= "us-east-1"
+	cluster_name= "Cluster-bFxlemlV1odQ"
 	
    }
   agent {
@@ -14,42 +14,51 @@ pipeline {
     }
 
   }
+	
+stage('Run Unit Testing') {
+      steps {
+        sh '''echo "Running Unit Testing"
+	      cd task/demoweb
+	      mvn clean test'''
+      }
+    }
   stages {
-    stage('Build') {
+    stage('Run Build') {
       steps {
-        sh 'cd springboot-demo/demoweb && mvn package'
+        sh ''' echo "Compiling and building the maven project"
+	      cd task/demoweb
+	      mvn clean package'''
       }
     }
-    stage('Test') {
+    
+	  
+	  stage(' Run Code Quality Analysis using SonarQube') {
       steps {
-        sh 'cd springboot-demo/demoweb && mvn test '
+        sh ''' echo "Running Sonar code quality Analysis"
+	      cd task/demoweb 
+	      mvn sonar:sonar -Dsonar.host.url=http://0.0.0.0:9000'''
       }
     }
 	  
-	  stage('Code Quality') {
-      steps {
-        sh 'cd springboot-demo/demoweb && mvn sonar:sonar -Dsonar.host.url=http://0.0.0.0:9000'
-      }
-    }
 	  
-	  
-    stage('Image Build&Publish') {
+    stage('Build Docker Image and Push to ECR') {
       steps {
-        echo 'Build Images'
+        echo "Build docker image"
         script {
-           sh '''docker build -t $image:$version ./springboot-demo/demoweb/
-		 $(aws ecr get-login --no-include-email --region us-east-2 | sed 's|https://||')
-		docker push $image:$version
-		docker rmi $image:$version
-				 
-		   '''
+           sh '''docker build -t $image:$version ./task/demoweb/
+	         echo "Login to ECR Repo"
+		 $(aws ecr get-login --no-include-email --region us-east-1 | sed 's|https://||')
+		 echo "Pushing docker image to ECR"
+		 docker push $image:$version
+		 docker rmi $image:$version
+		 '''
             
            }
 
       }
     }
 	
-	 stage('Approval for Deployment in K8s') {
+     stage('Approval for Deployment in K8s') {
        steps {
             script {
               timeout(time: 10, unit: 'MINUTES') {
