@@ -1,0 +1,46 @@
+
+Test Details:
+
+ 
+
+Our group deals with deploying micro services to cloud environments on to a container orchestration platform like kubernetes.  The prospective candidates must be proficient in creating pipelines that build micro services and deploy them on to a container orchestration platfrom.   Your pipeline must include the basic requirements, but extra points will be given for each of the advanced requirements they're able to include.  The candidates would need to present a working a pipeline, and demonstrate the application running on kuberntes.
+
+ 
+
+Basic Requirements:
+
+ 
+
+1) Build the code from a github repository.  You can use the https://github.com/ewolff/microservice-kubernetes project on github or if you have any other micro service project you would like to use please do so
+
+ 
+
+2) Once the artefact is built, you pipeline would need to deploy it in a kubernetes environment.  You can use Minikube on your local machine.
+
+ 
+
+Advanced:
+
+ 
+
+1) As part of the build process, please add code quality checks.   You can use any code quality tool, it just needs to be integrated into your pipeline
+
+ 
+
+2)As part of your build process you would need to make use of artifact repository to store the built artifact.  You can use any artifact repository tool.  Bonus points: explain your version number strategy and why you selected the specific tool.
+
+ 
+
+3)Add a an "approval" gate to your pipeline, where the pipeline can't proceed without an approval from a user.  Explain how you've done this.
+
+ 
+
+4) Add notifications on the successful or failure execution of your pipeline, explain how you've done this.
+
+ 
+
+4)Utilise a cloud base kubernetes service like AKS (Azure Kubernetes Service) or Amazon EKS (Amazon Elastick Kubernetes Service), or GCP.  Explain the cloud platform chosen and why.
+
+ 
+
+You're free to chose any scripting language, any orchestration tool like jenkins, Azure DevOps, GitHub Actions etc.  Be prepared to answer why you selected the specific tool.
